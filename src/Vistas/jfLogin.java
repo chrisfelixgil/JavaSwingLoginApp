@@ -6,6 +6,8 @@ package Vistas;
 
 import Modelos.dbConecction;
 import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -153,6 +155,36 @@ public class jfLogin extends javax.swing.JFrame {
 
         dbConecction objConection = new dbConecction();
         objConection.dbConecction();
+
+        String user = txtUser.getText();
+        String pass = new String(txtPassword.getPassword());
+
+        //login
+        if (!user.isEmpty() && !pass.isEmpty()) {
+            try {
+                // PreparedStatement para prevenir inyecciones SQL
+                PreparedStatement ps = objConection.dbConecction().prepareStatement("SELECT UserName, Password FROM User WHERE UserName = ? AND Password = ?");
+                ps.setString(1, user);
+                ps.setString(2, pass);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Login correcto. Bienvenido " + user);
+                    // Abre la ventana main
+                    jfMainScreen mainScreen = new jfMainScreen();
+                    mainScreen.setVisible(true);
+                    mainScreen.setLocationRelativeTo(null);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe ingresar su usuario y contraseña, si no está registrado debe registrarse.");
+        }
 
 
     }//GEN-LAST:event_btSinginActionPerformed
