@@ -3,6 +3,8 @@ package Vistas;
 import Modelos.dbConecction;
 import Modelos.User;
 import java.sql.ResultSet;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,11 +12,23 @@ import java.sql.ResultSet;
  */
 public class jfMainScreen extends javax.swing.JFrame {
 
+    DefaultTableModel model;
+
     /**
      * Creates new form jfMainScreen
      */
     public jfMainScreen() {
         initComponents();
+
+        //Agrega nombres a las columnas de la tabla
+        String[] titles = {"Nombre Usuario", "Nombre", "Apellido", "Número telefonico", "E-mail"};
+
+        model = new DefaultTableModel(null, titles);
+        tblUsers.setModel(model);
+
+        this.showData();
+        this.clean();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -64,6 +78,7 @@ public class jfMainScreen extends javax.swing.JFrame {
 
         jLabel8.setText("Confirmar contraseña:");
 
+        txtUser.setEditable(false);
         txtUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUserActionPerformed(evt);
@@ -80,6 +95,11 @@ public class jfMainScreen extends javax.swing.JFrame {
 
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eliminar.png"))); // NOI18N
         btnDelete.setText("Eliminar");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnSignoff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cerrar-sesion.png"))); // NOI18N
         btnSignoff.setText("Cerrar sesión");
@@ -100,6 +120,11 @@ public class jfMainScreen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblUsers);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -212,18 +237,39 @@ public class jfMainScreen extends javax.swing.JFrame {
         //conexion a la base de datos
         dbConecction objConection = new dbConecction();
         objConection.dbConecction();
+
+        User user = showDataUI();
+
+        String insertSentencia = String.format("UPDATE User SET Name = '%s', LastName = '%s', PhoneNumber = '%s', Email = '%s', Password = '%s' "
+                + " WHERE UserName = '%s'", user.getName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(), user.getPassword(), user.getUserName());
+
+        objConection.registerUser(insertSentencia);
+
+        this.showData();
+        this.clean();
+
+
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    //Muestra los datos de la base de datos en la tabla
+    public void showData() {
+
+        //refresca los datos de la tabla
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+
+        dbConecction objConection = new dbConecction();
+        objConection.dbConecction();
+
         try {
             ResultSet result = objConection.showUsers("SELECT * FROM user");
 
             while (result.next()) {
 
-                System.out.println(result.getString("ID"));
-                System.out.println(result.getString("UserName"));
-                System.out.println(result.getString("Name"));
-                System.out.println(result.getString("LastName"));
-                System.out.println(result.getString("PhoneNumber"));
-                System.out.println(result.getString("Email"));
-                System.out.println(result.getString("Password"));
+                Object[] user = {result.getString("UserName"), result.getString("Name"), result.getString("LastName"), result.getString("PhoneNumber"), result.getString("Email")};
+
+                model.addRow(user);
 
             }
 
@@ -231,16 +277,87 @@ public class jfMainScreen extends javax.swing.JFrame {
             System.out.println(e);
         }
 
-    }//GEN-LAST:event_btnUpdateActionPerformed
+    }
+
 
     private void btnSignoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignoffActionPerformed
-        
+
         jfLogin login = new jfLogin();
         login.setVisible(true);
         this.dispose();
-        
-        
+
+
     }//GEN-LAST:event_btnSignoffActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+
+        //Borrar elementos de la tabla
+        dbConecction objConection = new dbConecction();
+        objConection.dbConecction();
+
+        User user = showDataUI();
+
+        String insertSentencia = String.format("DELETE FROM User WHERE UserName ='%s'", user.getUserName());
+
+        objConection.registerUser(insertSentencia);
+
+        this.showData();
+        this.clean();
+
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    //obtener los datos del los campos text
+    public User showDataUI() {
+
+        User user = new User();
+
+        user.setUserName(txtUser.getText());
+        user.setName(txtName.getText());
+        user.setLastName(txtLastname.getText());
+        user.setPhoneNumber(txtPhonenumber.getText());
+        user.setEmail(txtEmail.getText());
+        user.setPassword(txtPassword.getText());
+
+        return user;
+
+    }
+
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+
+        //Selecciona los campos de la tabla y los incorpora en los campos correspondientes
+        if (evt.getClickCount() == 1) {
+
+            JTable receptor = (JTable) evt.getSource();
+
+            txtUser.setText(receptor.getModel().getValueAt(receptor.getSelectedRow(), 0).toString());
+            txtName.setText(receptor.getModel().getValueAt(receptor.getSelectedRow(), 1).toString());
+            txtLastname.setText(receptor.getModel().getValueAt(receptor.getSelectedRow(), 2).toString());
+            txtPhonenumber.setText(receptor.getModel().getValueAt(receptor.getSelectedRow(), 3).toString());
+            txtEmail.setText(receptor.getModel().getValueAt(receptor.getSelectedRow(), 4).toString());
+
+        }
+        btnUpdate.setEnabled(true);
+        btnDelete.setEnabled(true);
+        btnSignoff.setEnabled(true);
+    }//GEN-LAST:event_tblUsersMouseClicked
+
+    //Limpia todos los campos y desabilita los botones
+    public void clean() {
+
+        txtUser.setText("");
+        txtName.setText("");
+        txtLastname.setText("");
+        txtEmail.setText("");
+        txtPhonenumber.setText("");
+        txtPassword.setText("");
+        txtConfirmpassword.setText("");
+
+        btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
+        btnSignoff.setEnabled(true);
+
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -250,6 +250,9 @@ public class jfRegister extends javax.swing.JFrame {
                     + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s');", user.getUserName(), user.getName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(), user.getPassword());
 
             objConection.registerUser(insertSentencia);
+            
+            this.clean();
+            
             JOptionPane.showMessageDialog(null, "Usuario creado satisfactoriamente.");
             
             jfMainScreen mainScreen = new jfMainScreen();
@@ -282,6 +285,18 @@ public class jfRegister extends javax.swing.JFrame {
 
         return user;
 
+    }
+    
+        public void clean(){
+    
+        txtUser.setText("");
+        txtName.setText("");
+        txtLastname.setText("");
+        txtEmail.setText("");
+        txtPhonenumber.setText("");
+        txtPassword.setText("");
+        txtConfirmpassword.setText("");
+       
     }
 
     /**
