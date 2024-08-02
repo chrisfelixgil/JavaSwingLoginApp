@@ -9,8 +9,16 @@ import java.sql.Connection;
  */
 public class dbConecction {
     
-    String dbConecction = "";
     Connection conn = null;
+    String user ="root";
+    String password ="admin";
+    String db ="JavaSwingLoginApp";
+    String ip ="localhost";
+    String port ="3306";
+    
+    String cadena = "jdbc:mysql://"+ip+":"+port+"/"+db;
+    
+    
     
     public dbConecction(){
         try {
