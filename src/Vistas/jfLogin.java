@@ -4,6 +4,8 @@
  */
 package Vistas;
 
+import Modelos.dbConecction;
+
 /**
  *
  * @author chris
@@ -147,7 +149,11 @@ public class jfLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSinginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSinginActionPerformed
-        // TODO add your handling code here:
+        
+        //conexion a la base de datos
+        dbConecction objConection = new dbConecction();
+        objConection.dbConecction();
+
         
         
     }//GEN-LAST:event_btSinginActionPerformed

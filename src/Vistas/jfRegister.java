@@ -4,6 +4,8 @@
  */
 package Vistas;
 
+import Modelos.dbConecction;
+
 /**
  *
  * @author chris
@@ -74,6 +76,11 @@ public class jfRegister extends javax.swing.JFrame {
 
         btSingup.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btSingup.setText("Regístrate");
+        btSingup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSingupActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("¿Ya tienes una cuenta?");
 
@@ -226,6 +233,14 @@ public class jfRegister extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_lblSinginMouseClicked
+
+    private void btSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSingupActionPerformed
+        //conexion a la base de datos
+        dbConecction objConection = new dbConecction();
+        objConection.dbConecction();
+        objConection.registerUser("INSERT INTO User (UserName, Name, LastName, PhoneNumber, Email, Password) VALUES ('loquillo', 'Felix', 'Gil', '809-555-7178', 'fgil@gmail.com', 'password11');");
+        
+    }//GEN-LAST:event_btSingupActionPerformed
 
     /**
      * @param args the command line arguments
