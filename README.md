@@ -5,6 +5,7 @@ JavaSwingLoginApp es un proyecto de ejemplo que muestra cómo implementar un sis
 
 ## Tarea 4 - Programación 1
 Esta es la tarea 4 para la clase de Programación 1, impartida por el profesor Kelyn Tejada Belliard en el Instituto Tecnológico de las Américas (ITLA).
+by: Christian Gil 2012-1036
 
 ## Funcionalidades
 - Registro de nuevos usuarios.
