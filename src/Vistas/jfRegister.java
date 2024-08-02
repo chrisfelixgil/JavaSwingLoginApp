@@ -230,6 +230,7 @@ public class jfRegister extends javax.swing.JFrame {
         //Abre la ventana de login
         jfLogin login = new jfLogin();
         login.setVisible(true);
+        login.setLocationRelativeTo(null);
 
         this.dispose();
 
@@ -241,7 +242,38 @@ public class jfRegister extends javax.swing.JFrame {
         objConection.dbConecction();
 
         User user = showDataUI();
-        
+
+        if (user.getUserName().isEmpty() && user.getName().isEmpty() && user.getLastName().isEmpty()
+                && user.getPhoneNumber().isEmpty() && user.getEmail().isEmpty() && user.getPassword().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
+            return;
+        }
+
+        if (user.getUserName().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo 'Nombre de usuario' es obligatorio.");
+            return;
+        }
+        if (user.getName().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo 'Nombre' es obligatorio.");
+            return;
+        }
+        if (user.getLastName().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo 'Apellido' es obligatorio.");
+            return;
+        }
+        if (user.getPhoneNumber().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo 'Número de teléfono' es obligatorio.");
+            return;
+        }
+        if (user.getEmail().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo 'Correo electrónico' es obligatorio.");
+            return;
+        }
+        if (user.getPassword().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo 'Contraseña' es obligatorio.");
+            return;
+        }
+
         //Validar que la contraseña sea igual a la confirmar contraseña
         if (new String(txtPassword.getPassword()).equals(new String(txtConfirmpassword.getPassword()))) {
 
@@ -250,11 +282,11 @@ public class jfRegister extends javax.swing.JFrame {
                     + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s');", user.getUserName(), user.getName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(), user.getPassword());
 
             objConection.registerUser(insertSentencia);
-            
+
             this.clean();
-            
+
             JOptionPane.showMessageDialog(null, "Usuario creado satisfactoriamente.");
-            
+
             jfMainScreen mainScreen = new jfMainScreen();
             mainScreen.setVisible(true);
             this.dispose();
@@ -265,7 +297,6 @@ public class jfRegister extends javax.swing.JFrame {
 
         }
 
-        
         //Limpiar los campos
         //mensaje en pantalla para indicar que el usuario se ha registrado exitosamente.
 
@@ -286,9 +317,9 @@ public class jfRegister extends javax.swing.JFrame {
         return user;
 
     }
-    
-        public void clean(){
-    
+
+    public void clean() {
+
         txtUser.setText("");
         txtName.setText("");
         txtLastname.setText("");
@@ -296,42 +327,18 @@ public class jfRegister extends javax.swing.JFrame {
         txtPhonenumber.setText("");
         txtPassword.setText("");
         txtConfirmpassword.setText("");
-       
+
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jfRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jfRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jfRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jfRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new jfRegister().setVisible(true);
-            }
-        });
+        jfRegister register = new jfRegister();
+        register.setVisible(true);
+        register.setLocationRelativeTo(null);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

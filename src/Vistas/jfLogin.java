@@ -5,6 +5,7 @@
 package Vistas;
 
 import Modelos.dbConecction;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -149,58 +150,33 @@ public class jfLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSinginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSinginActionPerformed
-        
-        //conexion a la base de datos
+
         dbConecction objConection = new dbConecction();
         objConection.dbConecction();
 
-        
-        
+
     }//GEN-LAST:event_btSinginActionPerformed
 
+
     private void lblSingupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSingupMouseClicked
-       
+
         //Abre la ventana de registro
         jfRegister register = new jfRegister();
         register.setVisible(true);
-        
+        register.setLocationRelativeTo(null);
+
         this.dispose();
-        
+
     }//GEN-LAST:event_lblSingupMouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jfLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jfLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jfLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jfLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new jfLogin().setVisible(true);
-            }
-        });
+        jfLogin login = new jfLogin();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
