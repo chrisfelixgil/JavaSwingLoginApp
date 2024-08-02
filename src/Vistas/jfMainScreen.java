@@ -1,6 +1,8 @@
-
 package Vistas;
+
 import Modelos.dbConecction;
+import Modelos.User;
+import java.sql.ResultSet;
 
 /**
  *
@@ -14,7 +16,6 @@ public class jfMainScreen extends javax.swing.JFrame {
     public jfMainScreen() {
         initComponents();
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -82,6 +83,11 @@ public class jfMainScreen extends javax.swing.JFrame {
 
         btnSignoff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cerrar-sesion.png"))); // NOI18N
         btnSignoff.setText("Cerrar sesión");
+        btnSignoff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignoffActionPerformed(evt);
+            }
+        });
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -206,12 +212,36 @@ public class jfMainScreen extends javax.swing.JFrame {
         //conexion a la base de datos
         dbConecction objConection = new dbConecction();
         objConection.dbConecction();
-        
+        try {
+            ResultSet result = objConection.showUsers("SELECT * FROM user");
+
+            while (result.next()) {
+
+                System.out.println(result.getString("ID"));
+                System.out.println(result.getString("UserName"));
+                System.out.println(result.getString("Name"));
+                System.out.println(result.getString("LastName"));
+                System.out.println(result.getString("PhoneNumber"));
+                System.out.println(result.getString("Email"));
+                System.out.println(result.getString("Password"));
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnSignoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignoffActionPerformed
+        
+        jfLogin login = new jfLogin();
+        login.setVisible(true);
+        this.dispose();
+        
+        
+    }//GEN-LAST:event_btnSignoffActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -4,7 +4,9 @@
  */
 package Vistas;
 
+import Modelos.User;
 import Modelos.dbConecction;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -224,23 +226,63 @@ public class jfRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void lblSinginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSinginMouseClicked
-        
-        
+
         //Abre la ventana de login
         jfLogin login = new jfLogin();
         login.setVisible(true);
-        
+
         this.dispose();
-        
+
     }//GEN-LAST:event_lblSinginMouseClicked
 
     private void btSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSingupActionPerformed
         //conexion a la base de datos
         dbConecction objConection = new dbConecction();
         objConection.dbConecction();
-        objConection.registerUser("INSERT INTO User (UserName, Name, LastName, PhoneNumber, Email, Password) VALUES ('loquillo', 'Felix', 'Gil', '809-555-7178', 'fgil@gmail.com', 'password11');");
+
+        User user = showDataUI();
         
+        //Validar que la contraseña sea igual a la confirmar contraseña
+        if (new String(txtPassword.getPassword()).equals(new String(txtConfirmpassword.getPassword()))) {
+
+            //toma los datos del frame para ingresarlos directamente a la base de datos
+            String insertSentencia = String.format("INSERT INTO User (UserName, Name, LastName, PhoneNumber, Email, Password) "
+                    + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s');", user.getUserName(), user.getName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(), user.getPassword());
+
+            objConection.registerUser(insertSentencia);
+            JOptionPane.showMessageDialog(null, "Usuario creado satisfactoriamente.");
+            
+            jfMainScreen mainScreen = new jfMainScreen();
+            mainScreen.setVisible(true);
+            this.dispose();
+
+        } else {
+
+            JOptionPane.showMessageDialog(null, "Error. Las contraseñas deben ser iguales");
+
+        }
+
+        
+        //Limpiar los campos
+        //mensaje en pantalla para indicar que el usuario se ha registrado exitosamente.
+
     }//GEN-LAST:event_btSingupActionPerformed
+
+    //Obtiene el valor de los txtfields
+    public User showDataUI() {
+
+        User user = new User();
+
+        user.setUserName(txtUser.getText());
+        user.setName(txtName.getText());
+        user.setLastName(txtLastname.getText());
+        user.setPhoneNumber(txtPhonenumber.getText());
+        user.setEmail(txtEmail.getText());
+        user.setPassword(txtPassword.getText());
+
+        return user;
+
+    }
 
     /**
      * @param args the command line arguments
